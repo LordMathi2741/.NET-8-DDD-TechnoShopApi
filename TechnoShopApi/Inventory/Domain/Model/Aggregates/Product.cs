@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using TechnoShopApi.Inventory.Domain.Model.Commands;
 
 namespace TechnoShopApi.Inventory.Domain.Model.Aggregates;
@@ -10,6 +11,8 @@ public partial class Product
     public decimal Price { get; set; }
     public int Quantity { get; set; }
     public string ImageUrl { get; set; }
+    
+    public ICollection<ProductContainer> Containers { get; set; }
 }
 
 public partial class Product

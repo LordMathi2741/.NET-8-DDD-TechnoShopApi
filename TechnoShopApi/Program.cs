@@ -43,8 +43,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // news bounded context injection configuration DEPENDENCY INJECTION
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IContainerRepository, ContainerRepository>();
 builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
 builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
+builder.Services.AddScoped<IContainerCommandService, ContainerCommandService>();
 // configure lowercase URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
