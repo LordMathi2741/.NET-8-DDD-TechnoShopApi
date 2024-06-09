@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using TechnoShopApi.Inventory.Domain.Model.Aggregates;
+using TechnoShopApi.Inventory.Domain.Model.ValueObjects;
 using TechnoShopApi.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 namespace TechnoShopApi.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -23,9 +24,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<Product>().ToTable("products");
         modelBuilder.Entity<Product>().HasKey(p => p.Id);
-        modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
-        modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(100);
-        modelBuilder.Entity<Product>().Property(p => p.Description).IsRequired().HasMaxLength(500);
+        modelBuilder.Entity<Product>().OwnsOne( p => p.ProductName, pn =>
+        {
+            pn.WithOwner().HasForeignKey("Id");
+            pn.Property(n => n.Name).HasColumnName("ProductName");
+        });
+        modelBuilder.Entity<Product>().OwnsOne( p => p.ProductDescriptionValue, pd =>
+        {
+            pd.WithOwner().HasForeignKey("Id");
+            pd.Property(d => d.Description).HasColumnName("ProductDescription");
+        });
         modelBuilder.Entity<Product>().Property(p => p.Price).IsRequired();
         modelBuilder.Entity<Product>().Property(p => p.Quantity).IsRequired();
         
